@@ -1,0 +1,23 @@
+# docker-compose.yaml
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+     - 8080:8080
+     - 50000:50000
+    container_name: jenkins
+    volumes:
+    - /home/ec2-user/docker/jenkins/jenkins_compose/jenkins_configuration:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
+  jenkins-agent:
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    container_name: jenkins-agent
+    expose:
+      - 22
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC0CCfP3tGPXVhOsvpyT68b6QGDARmbwoP3itRDBdpThh3AtjNu8NQ/IOl2JahH6Lh2wncxDvBxb8WwbXeanBT7X++SOEta2fA/P6z7JTrfJ2HRPn3aqsRZTT5454OPwi8gRq3J7ZBvFzSiYj8h74vqZQGuL5Cul/G+TGlhL2EMXbJUAdq1CPIl8Cm0JF1Up7ZeBJnHevGFbnSTixCFWd4YYrWZYJEXeRCx5HF0P7/on7HnVwAUKAPhtFcUJjTpUTk60BjfrIuruIyFlsuH+a57YQI9LalGPposjLszMd5NXXzQvgk3Xw0v23jZzN+7sPCguhYus8l8k5G1MKeXiZTt9yC3RB70skO8FesuffeA6wsPqf4ynEDDA4qmxFttvNlBV0++7U3u9MlZlAnBDW9aT7cOpgOs/7XqxAw5Tt9H+J4mLCPtZYXQQggxfdfaCpBBb4cKUuLjBmbdcJiHCuMd+An+ZwGLYRQNuqHI425u/ebd8DzAxHg+tvI+D/1z06k= ec2-user@ip-172-31-45-213.eu-north-1.compute.internal
